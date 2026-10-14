@@ -1,0 +1,30 @@
+{
+  "bundle_sha256": "37f7408f9de2b6ecf73d6f56377e84176828cdfbe52d4650b3a532ff84aaa801",
+  "checkpoint": "ckpt_round2000_b1.0",
+  "samples_per_method": 600,
+  "first_displayed_sample": 300,
+  "frames": 301,
+  "stride": 1,
+  "acf_uses_all_prefix_samples": true,
+  "observable": "signed",
+  "fps_requested": 10,
+  "size_pixels": [
+    1600,
+    1504
+  ],
+  "fixed_colour_limits": [
+    -3.9577245712280273,
+    3.9577245712280273
+  ],
+  "mean_field_limits": [
+    -1.6643056390304993,
+    1.6643056390304993
+  ],
+  "gif_sha256": "b3263a6630899f6447e5eea3b0e6f5d8e22775f09a821de46f84d3fc6bc5fdbb",
+  "note": "GIF timing is quantized to centiseconds; looping resets the displayed history.",
+  "website_encoding": {
+    "palette_colors_max": 256,
+    "dither": "none",
+    "additional_colour_reduction": false
+  }
+}

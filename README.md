@@ -1,80 +1,40 @@
-# Academic Project Page Template
+# Data Free LFT — project page
 
-> **Update (September 2025)**: This template has been modernized with better design, SEO, and mobile support. For the original version, see the [original-version branch](https://github.com/eliahuhorwitz/Academic-project-page-template/tree/original-version).
+Local academic project page based on [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template). Nothing has been deployed by this setup.
 
-A clean, responsive template for academic project pages.
+## Preview
 
+```bash
+cd /Users/dg/Projects/Research/lft_gen/datafree_lft
+./preview.sh
+```
 
-Example project pages built using this template are:
-- https://horwitz.ai/probex
-- https://vision.huji.ac.il/probegen
-- https://horwitz.ai/mother
-- https://horwitz.ai/spectral_detuning
-- https://vision.huji.ac.il/ladeda
-- https://vision.huji.ac.il/dsire
-- https://horwitz.ai/podd
-- https://dreamix-video-editing.github.io
-- https://horwitz.ai/conffusion
-- https://horwitz.ai/3d_ads/
-- https://vision.huji.ac.il/ssrl_ad
-- https://vision.huji.ac.il/deepsim
+Open http://127.0.0.1:8088. Use HTTP rather than opening index.html directly, because the results table loads a JSON snapshot.
 
+## Update from the paper
 
+```bash
+python3 tools/sync_paper.py --source ..
+```
 
-## Start using the template
-To start using the template click on `Use this Template`.
+Requires Poppler (`pdftoppm`). Copies the existing manuscript and supplement PDFs, renders four existing paper figures to PNG, and extracts nine CVSI result rows from `final_results/method_results/results.json`. `static/data/results.json` records source checksums and checkpoint identities. It does not recompute scientific measurements or modify the paper. Rebuild the paper upstream before syncing if its PDFs are stale.
 
-The template uses html for controlling the content and css for controlling the style. 
-To edit the websites contents edit the `index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.  
+## GIFs
 
-**IMPORTANT!** Make sure to replace the `favicon.ico` under `static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
+The comparison is **L16 critical phase only**, κ=0.2705, λ=0.022: archived HMC beside saved CVSI samples, using the paper-selected round-2000 model. The six-panel GIF shows configurations 300–600 at 10 fps, including magnetization traces and autocorrelations.
 
-## What's New
+The GIF is in `static/gifs/comparison_L16_critical_300_600_hd.gif`; its path is configured as `comparisonGif` in `static/js/index.js`. No video is embedded. Original template media are retained but unreferenced.
 
-- Modern, clean design with better mobile support
-- Improved SEO with proper meta tags and structured data
-- Performance improvements (lazy loading, optimized assets)
-- More Works dropdown
-- Copy button for BibTeX citations
-- Better accessibility
+## Edit
 
-## Components
+- Content: `index.html`
+- Palette/layout: `static/css/index.css` (variables at the top)
+- GIF configuration/table rendering: `static/js/index.js`
+- Results: generated `static/data/results.json`
 
-- Teaser video
-- Image carousel
-- YouTube video embedding
-- Video carousel
-- PDF poster viewer
-- BibTeX citation
+No publication venue or arXiv identifier is invented; links point to the supplied manuscript, supplement and code. Template attribution and CC BY-SA 4.0 link remain in the footer.
 
-## Customization
-
-The HTML file has TODO comments showing what to replace:
-
-- Paper title, authors, institution, conference
-- Links (arXiv, GitHub, etc.)
-- Abstract and descriptions  
-- Videos, images, and PDFs
-- Related works in the dropdown
-- Meta tags for SEO and social sharing
-
-### Meta Tags
-The template includes meta tags for better search engine visibility and social media sharing. These appear in the `<head>` section and help with:
-- Google Scholar indexing
-- Social media previews (Twitter, Facebook, LinkedIn)
-- Search engine optimization
-
-Create a 1200x630px social preview image at `static/images/social_preview.png`.
-
-## Tips
-
-- Compress images with [TinyPNG](https://tinypng.com)
-- Use YouTube for large videos (>10MB)  
-- Replace the favicon in `static/images/`
-- Works with GitHub Pages
-
-## Acknowledgments
-Parts of this project page were adopted from the [Nerfies](https://nerfies.github.io/) page.
-
-## Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+The preview defaults to port 8088 (`./preview.sh 8090` selects another port).
+Requests to `/props`, `/v1/models`, `/tools`, or `/build.json` are not made by
+this page. This is a static site, not an API server; such requests from other
+clients will receive 404/501 responses. Open the root URL shown by the launcher.
