@@ -23,7 +23,6 @@
 <div class="section-heading"><div><p class="eyebrow">A view of the configurations</p><h2 id="comparison-title">HMC vs. CVSI</h2></div><span class="tag">L = 16 · critical phase</span></div>
 <div class="method-card" id="method">
 <h3>Method: data-free CVSI training</h3>
-<p>The sampler learns from its own generated fields. CVSI blends the action-gradient and denoising targets; alternating sample generation and score-network updates gives the fixed-point training loop.</p>
 <div class="algorithm-label">Algorithm 1 · abbreviated from the paper</div>
 <ol class="algorithm-steps">
 <li>Initialize the score network, its EMA copy, and the field-variance estimate.</li>
@@ -40,14 +39,14 @@
 <h2>Experimental Results</h2>
 <p class="section-intro">2D φ<sup>4</sup> lattices with L ∈ {4, 8, 16}, λ = 0.022, and κ ∈ {0.25, 0.2705, 0.28}. We compare sampling efficiency, total free energy against thermodynamic integration, and importance-reweighted physical observables.</p>
 <div class="figure-grid results-pair">
-<figure class="figure-card"><h3>Effective sample size · ESS/N</h3><img src="static/images/ess.png" alt="Critical-phase ESS/N comparison across lattice sizes" loading="lazy"><figcaption>The data-driven DSI oracle uses HMC training data; the data-free methods do not.</figcaption></figure>
-<figure class="figure-card"><h3>Free-energy difference</h3><img src="static/images/free_energy.png" alt="Total beta free-energy residual relative to the TI reference across lattice sizes" loading="lazy"><figcaption>Total free-energy difference βF − βF<sub>TI</sub>, using the selected paper evaluations.</figcaption></figure>
+<figure class="figure-card"><h3>Effective sample size · ESS/N</h3><img src="static/images/ess.png" alt="Critical-phase ESS/N comparison across lattice sizes" loading="lazy"><figcaption>ESS comparison of our data-free CVSI training (red circle), TSI (orange triangle) and IW-TSI (purple inverted triangle), as well as the oracle data-driven DSI (blue square), at criticality. Error bars show 1σ confidence intervals.</figcaption></figure>
+<figure class="figure-card"><h3>Free-energy difference</h3><img src="static/images/free_energy.png" alt="Total beta free-energy residual relative to the TI reference across lattice sizes" loading="lazy"><figcaption>Free-energy estimation error βF − βF<sub>TI</sub> at criticality.</figcaption></figure>
 </div>
-<figure class="figure-card observables-figure"><h3>Physical observables</h3><img src="static/images/observables.png" alt="Relative differences of importance-reweighted physical observables from HMC" loading="lazy"><figcaption>Importance-reweighted observable estimates relative to HMC. See the paper for definitions and uncertainty estimation.</figcaption></figure>
+<figure class="figure-card observables-figure"><h3>Physical observables</h3><img src="static/images/observables.png" alt="Relative differences of importance-reweighted physical observables from HMC" loading="lazy"><figcaption>Estimation errors for the mean absolute magnetization ⟨|m|⟩, the susceptibility of the absolute magnetization χ<sub>|M|</sub>, the magnetic susceptibility χ<sub>M</sub>, and the fourth-order Binder cumulant U<sub>4</sub>.</figcaption></figure>
 </section>
 <section class="section-block" id="main-table">
 <h2>Main CVSI Table</h2>
-<p class="caption">Selected CVSI results from the paper exports. f = βF/L²; uncertainties are standard errors. The TI z-score uses the combined sampler and independent TI standard error.</p>
+<p class="caption">Free energy per site f = βF/|Λ<sub>L</sub>| and TI reference f<sub>TI</sub>. Errors in parentheses are 1σ on the last digits. The signed score z = (f − f<sub>TI</sub>)/√(σ<sub>f</sub><sup>2</sup> + σ<sub>f<sub>TI</sub></sub><sup>2</sup>) uses independent sampler and TI standard errors. Symmetric pools use N = 50,000. Critical pools use N = 100,000. Broken pools use N = 50,000.</p>
 <div class="table-scroll"><table><thead><tr><th>L</th><th>Phase</th><th>Samples</th><th>ESS/N</th><th>f · sampler</th><th>f · TI</th><th>TI z-score</th></tr></thead><tbody id="results-body"></tbody></table></div>
 <p id="results-status" class="caption" role="status">Loading the exported result snapshot…</p>
 </section>

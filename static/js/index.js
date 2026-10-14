@@ -27,8 +27,7 @@ async function loadResults() {
       }
       body.append(tr);
     }
-    status.textContent = 'Snapshot from the repository’s exported results. Source file checksums and checkpoint identities are included in ';
-    const link = document.createElement('a'); link.href='static/data/results.json';link.textContent='results.json';status.append(link);
+    status.textContent = '';
   } catch (error) {
     status.textContent = `Cannot load results: ${error.message}. Serve the page with a local HTTP server (see README).`;
   }
