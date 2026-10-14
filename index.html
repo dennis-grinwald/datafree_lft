@@ -18,11 +18,15 @@
 <p class="affiliations"><sup>1</sup> BIFOLD &nbsp; <sup>2</sup> Technische Universität Berlin &nbsp; <sup>3</sup> DESY<br><sup>4</sup> The Cyprus Institute &nbsp; <sup>5</sup> RIKEN AIP</p>
 <div class="actions"><a class="button primary" href="https://arxiv.org/abs/2610.18863">arXiv ↗</a><a class="button" href="static/pdfs/main.pdf">Paper PDF ↗</a><a class="button" href="static/pdfs/supplement.pdf">Supplement ↗</a></div>
 </header>
-<section class="section-block abstract" id="abstract"><h2>Abstract</h2><p>Sampling equilibrium field configurations remains a major computational bottleneck in lattice field theory, motivating the development of generative samplers that can produce independent configurations. Diffusion models are promising for this purpose, but their standard denoising score matching objective requires samples from the target distribution, seemingly reintroducing the original sampling problem. Here, we show that diffusion models can instead be trained from their own generated samples using the target score identity, provided access to the unnormalized probability density. Importance-weighted formulations of this identity yield a consistent target throughout training, while unweighted variants define a self-consistent fixed-point training scheme. We benchmark the different approaches in two-dimensional φ<sup>4</sup> theory and identify effective choices that enable efficient training and sampling across the symmetric, critical, and broken phases. Ultimately, our data-free training approach achieves comparable performance to training on HMC reference data.</p></section>
+<section class="section-block abstract" id="abstract"><h2>Abstract</h2><p>Sampling equilibrium field configurations remains a major computational bottleneck in lattice field theory, motivating the development of generative samplers that can produce independent configurations. Diffusion models are promising for this purpose, but their standard denoising score matching objective requires samples from the target distribution, seemingly reintroducing the original sampling problem. Here, we show that diffusion models can instead be trained from their own generated samples using the target score identity, provided access to the unnormalized probability density. Importance-weighted formulations of this identity yield a consistent target throughout training, while unweighted variants define a self-consistent fixed-point training scheme. We benchmark the different approaches in two-dimensional φ<sup>4</sup> theory and identify effective choices that enable efficient training and sampling across the symmetric, near critical, and broken phases. Ultimately, our data-free training approach achieves comparable performance to training on HMC reference data.</p></section>
 <section class="comparison section-block" aria-labelledby="comparison-title">
-<div class="section-heading"><div><p class="eyebrow">A view of the configurations</p><h2 id="comparison-title">HMC vs. CVSI</h2></div><span class="tag">L = 16 · critical phase</span></div>
+<div class="section-heading"><div><h2 id="comparison-title">Sampled configurations</h2></div></div>
+<section class="section-block comparison" id="comparison"><p>The animation compares critical-phase 2D φ⁴ theory samples generated along an HMC trajectory (left) and samples from our trained CVSI sampler (right). HMC gets stuck in one mode (negative magnetization) and takes a long time to escape it (around sample no. 450), resulting in a high integrated autocorrelation time τ_int. Our model samples from both modes, with magnetization switching signs frequently, and keeps the integrated autocorrelation time low.</p></section>
+
+
+
 <div class="gif-placeholder" id="comparison-gif"><div class="placeholder-pair"><div><span class="field-icon">φ</span><h3>HMC reference</h3></div><div><span class="field-icon">φ̂</span><h3>CVSI (ours)</h3></div></div><p>Loading the saved-sample comparison…</p></div>
-<p class="caption">Saved configurations 300–600 at 10 frames per second, comparing the archived HMC reference and saved CVSI configurations at κ = 0.2705 and λ = 0.022. The sampler uses the paper-selected L16 critical-phase checkpoint (round 2000).</p>
+<p class="caption">GIF displays precomputed and saved configurations for both samplers, starting at sample 300 and displaying until sample 600 at 10 frames per second.</p>
 </section>
 <section class="section-block method-card" id="method">
 <h2>Method: data-free CVSI training</h2>
@@ -31,9 +35,9 @@
 <div class="algorithm-label">Algorithm 1 · abbreviated from the paper</div>
 <ol class="algorithm-steps">
 <li>Initialize the score network, its EMA copy, and the field-variance estimate.</li>
-<li><strong>Outer loop:</strong> generate a fresh field buffer with the EMA sampler; update the variance estimate after warm-up.</li>
+<li><strong>Outer loop:</strong> generate a fresh field buffer with the EMA sampler and update the variance estimate after warm-up.</li>
 <li><strong>Inner loop:</strong> draw a buffered field φ, a time t, and Gaussian noise ε. Form φ(t) = a(t)φ + b(t)ε.</li>
-<li>Compute the clipped CVSI target; take a weighted score-regression gradient step and update the EMA.</li>
+<li>Compute the clipped CVSI target, take a weighted score-regression gradient step and update the EMA.</li>
 <li>Repeat the inner updates and outer rounds; return the EMA sampler.</li>
 </ol>
 </div>
@@ -44,14 +48,14 @@
 <h2>Experimental Results</h2>
 <p class="section-intro">2D φ<sup>4</sup> lattices with L ∈ {4, 8, 16}, λ = 0.022, and κ ∈ {0.25, 0.2705, 0.28}. We compare sampling efficiency, total free energy against thermodynamic integration, and importance-reweighted physical observables.</p>
 <div class="figure-grid results-pair">
-<figure class="figure-card"><h3>Effective sample size · ESS/N</h3><img src="static/images/ess.png" alt="Critical-phase ESS/N comparison across lattice sizes" loading="lazy"><figcaption>ESS comparison of our data-free CVSI training (red circle), TSI (orange triangle) and IW-TSI (purple inverted triangle), as well as the oracle data-driven DSI (blue square), at criticality. Error bars show 1σ confidence intervals.</figcaption></figure>
-<figure class="figure-card"><h3>Free-energy difference</h3><img src="static/images/free_energy.png" alt="Total beta free-energy residual relative to the TI reference across lattice sizes" loading="lazy"><figcaption>Free-energy estimation error βF − βF<sub>TI</sub> at criticality.</figcaption></figure>
+<figure class="figure-card"><h3>Effective sample size · ESS/N</h3><img src="static/images/ess.png" alt="Near critical-phase ESS/N comparison across lattice sizes" loading="lazy"><figcaption>ESS comparison of our data-free CVSI training (red circle), TSI (orange triangle) and IW-TSI (purple inverted triangle), as well as the oracle data-driven DSI (blue square), near criticality. Error bars show 1σ confidence intervals.</figcaption></figure>
+<figure class="figure-card"><h3>Free-energy difference</h3><img src="static/images/free_energy.png" alt="Total beta free-energy residual relative to the TI reference across lattice sizes" loading="lazy"><figcaption>Free-energy estimation error βF − βF<sub>TI</sub> near criticality.</figcaption></figure>
 </div>
 <figure class="figure-card observables-figure"><h3>Physical observables</h3><img src="static/images/observables.png" alt="Relative differences of importance-reweighted physical observables from HMC" loading="lazy"><figcaption>Estimation errors for the mean absolute magnetization ⟨|m|⟩, the susceptibility of the absolute magnetization χ<sub>|M|</sub>, the magnetic susceptibility χ<sub>M</sub>, and the fourth-order Binder cumulant U<sub>4</sub>.</figcaption></figure>
 </section>
 <section class="section-block" id="main-table">
 <h2>Main CVSI Table</h2>
-<p class="caption">Free energy per site f = βF/|Λ<sub>L</sub>| and TI reference f<sub>TI</sub>. Errors in parentheses are 1σ on the last digits. The signed score z = (f − f<sub>TI</sub>)/√(σ<sub>f</sub><sup>2</sup> + σ<sub>f<sub>TI</sub></sub><sup>2</sup>) uses independent sampler and TI standard errors. Symmetric pools use N = 50,000. Critical pools use N = 100,000. Broken pools use N = 50,000.</p>
+<p class="caption">Free energy per site f = βF/|Λ<sub>L</sub>| and TI reference f<sub>TI</sub>. Errors in parentheses are 1σ on the last digits. The signed score z = (f − f<sub>TI</sub>)/√(σ<sub>f</sub><sup>2</sup> + σ<sub>f<sub>TI</sub></sub><sup>2</sup>) uses independent sampler and TI standard errors. Symmetric pools use N = 50,000. Near critical pools use N = 100,000. Broken pools use N = 50,000.</p>
 <div class="table-scroll"><table><thead><tr><th>L</th><th>Phase</th><th>Samples</th><th>ESS/N</th><th>f · sampler</th><th>f · TI</th><th>TI z-score</th></tr></thead><tbody id="results-body"></tbody></table></div>
 <p id="results-status" class="caption" role="status">Loading the exported result snapshot…</p>
 </section>

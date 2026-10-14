@@ -5,7 +5,7 @@ Local academic project page based on [Academic Project Page Template](https://gi
 ## Preview
 
 ```bash
-cd /Users/dg/Projects/Research/lft_gen/datafree_lft
+cd /Users/dg/Projects/Research/lft_gen/project_website
 ./preview.sh
 ```
 
