@@ -5,11 +5,11 @@
 <meta name="description" content="Training diffusion samplers from their own generated configurations, using the action of a lattice field theory. Research in two-dimensional phi-four theory.">
 <meta name="theme-color" content="#faf9f6">
 <title>Data Free Training of Diffusion Models for Lattice Field Theories</title>
-<link rel="stylesheet" href="static/css/bulma.min.css"><link rel="stylesheet" href="static/css/index.css">
+<link rel="stylesheet" href="static/css/bulma.min.css"><link rel="stylesheet" href="static/css/index.css?v=method2">
 <script defer src="static/js/index.js"></script>
 </head>
 <body>
-<nav aria-label="Main navigation"><a class="wordmark" href="#">Data Free LFT<span> / diffusion samplers</span></a><div><a href="#abstract">Abstract</a><a href="#results">Results</a><a href="#cite">Cite</a></div></nav>
+<nav aria-label="Main navigation"><a class="wordmark" href="#">Data Free LFT<span> / diffusion samplers</span></a><div><a href="#abstract">Abstract</a><a href="#method">Method</a><a href="#results">Results</a><a href="#cite">Cite</a></div></nav>
 <main>
 <header class="hero-section">
 <p class="eyebrow">Lattice field theory · Generative modelling</p>
@@ -21,7 +21,18 @@
 <section class="section-block abstract" id="abstract"><h2>Abstract</h2><p>Sampling equilibrium field configurations remains a major computational bottleneck in lattice field theory, motivating the development of generative samplers that can produce independent configurations. Diffusion models are promising for this purpose, but their standard denoising score matching objective requires samples from the target distribution, seemingly reintroducing the original sampling problem. Here, we show that diffusion models can instead be trained from their own generated samples using the target score identity, provided access to the unnormalized probability density. Importance-weighted formulations of this identity yield a consistent target throughout training, while unweighted variants define a self-consistent fixed-point training scheme. We benchmark the different approaches in two-dimensional φ<sup>4</sup> theory and identify effective choices that enable efficient training and sampling across the symmetric, critical, and broken phases. Ultimately, our data-free training approach achieves comparable performance to training on HMC reference data.</p></section>
 <section class="comparison section-block" aria-labelledby="comparison-title">
 <div class="section-heading"><div><p class="eyebrow">A view of the configurations</p><h2 id="comparison-title">HMC vs. CVSI</h2></div><span class="tag">L = 16 · critical phase</span></div>
-<p class="algorithm-summary"><strong>Generate → perturb → update → repeat.</strong> In each outer round, the current EMA sampler generates a buffer of field configurations. Inner-loop updates perturb these fields with Gaussian noise and fit the score network to the CVSI target, blending the action-gradient and denoising targets. Updating the network and its EMA, then refreshing the buffer, yields the data-free fixed-point iteration in Algorithm 1 of the paper.</p>
+<div class="method-card" id="method">
+<h3>Method: data-free CVSI training</h3>
+<p>The sampler learns from its own generated fields. CVSI blends the action-gradient and denoising targets; alternating sample generation and score-network updates gives the fixed-point training loop.</p>
+<div class="algorithm-label">Algorithm 1 · abbreviated from the paper</div>
+<ol class="algorithm-steps">
+<li>Initialize the score network, its EMA copy, and the field-variance estimate.</li>
+<li><strong>Outer loop:</strong> generate a fresh field buffer with the EMA sampler; update the variance estimate after warm-up.</li>
+<li><strong>Inner loop:</strong> draw a buffered field φ, a time t, and Gaussian noise ε. Form φ(t) = a(t)φ + b(t)ε.</li>
+<li>Compute the clipped CVSI target; take a weighted score-regression gradient step and update the EMA.</li>
+<li>Repeat the inner updates and outer rounds; return the EMA sampler.</li>
+</ol>
+</div>
 <div class="gif-placeholder" id="comparison-gif"><div class="placeholder-pair"><div><span class="field-icon">φ</span><h3>HMC reference</h3></div><div><span class="field-icon">φ̂</span><h3>CVSI (ours)</h3></div></div><p>Loading the saved-sample comparison…</p></div>
 <p class="caption">Saved configurations 300–600 at 10 frames per second, comparing the archived HMC reference and saved CVSI configurations at κ = 0.2705 and λ = 0.022. The sampler uses the paper-selected L16 critical-phase checkpoint (round 2000). Raw generated configurations are shown; this animation is not an importance-reweighted observable estimate.</p>
 </section>
