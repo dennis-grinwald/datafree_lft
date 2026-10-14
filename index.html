@@ -26,6 +26,8 @@
 </section>
 <section class="section-block method-card" id="method">
 <h2>Method: data-free CVSI training</h2>
+<div class="method-layout">
+<div class="method-explanation">
 <div class="algorithm-label">Algorithm 1 · abbreviated from the paper</div>
 <ol class="algorithm-steps">
 <li>Initialize the score network, its EMA copy, and the field-variance estimate.</li>
@@ -34,6 +36,9 @@
 <li>Compute the clipped CVSI target; take a weighted score-regression gradient step and update the EMA.</li>
 <li>Repeat the inner updates and outer rounds; return the EMA sampler.</li>
 </ol>
+</div>
+<figure class="paper-algorithm"><img src="static/images/algorithm.png" alt="Algorithm 1 from the paper: data-free training via fixed-point iteration, including the buffer generation, CVSI score loss, and EMA update equations." width="1000" height="828" loading="lazy"></figure>
+</div>
 </section>
 <section class="section-block" id="results">
 <h2>Experimental Results</h2>
