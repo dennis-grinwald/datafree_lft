@@ -21,8 +21,11 @@
 <section class="section-block abstract" id="abstract"><h2>Abstract</h2><p>Sampling equilibrium field configurations remains a major computational bottleneck in lattice field theory, motivating the development of generative samplers that can produce independent configurations. Diffusion models are promising for this purpose, but their standard denoising score matching objective requires samples from the target distribution, seemingly reintroducing the original sampling problem. Here, we show that diffusion models can instead be trained from their own generated samples using the target score identity, provided access to the unnormalized probability density. Importance-weighted formulations of this identity yield a consistent target throughout training, while unweighted variants define a self-consistent fixed-point training scheme. We benchmark the different approaches in two-dimensional φ<sup>4</sup> theory and identify effective choices that enable efficient training and sampling across the symmetric, critical, and broken phases. Ultimately, our data-free training approach achieves comparable performance to training on HMC reference data.</p></section>
 <section class="comparison section-block" aria-labelledby="comparison-title">
 <div class="section-heading"><div><p class="eyebrow">A view of the configurations</p><h2 id="comparison-title">HMC vs. CVSI</h2></div><span class="tag">L = 16 · critical phase</span></div>
-<div class="method-card" id="method">
-<h3>Method: data-free CVSI training</h3>
+<div class="gif-placeholder" id="comparison-gif"><div class="placeholder-pair"><div><span class="field-icon">φ</span><h3>HMC reference</h3></div><div><span class="field-icon">φ̂</span><h3>CVSI (ours)</h3></div></div><p>Loading the saved-sample comparison…</p></div>
+<p class="caption">Saved configurations 300–600 at 10 frames per second, comparing the archived HMC reference and saved CVSI configurations at κ = 0.2705 and λ = 0.022. The sampler uses the paper-selected L16 critical-phase checkpoint (round 2000).</p>
+</section>
+<section class="section-block method-card" id="method">
+<h2>Method: data-free CVSI training</h2>
 <div class="algorithm-label">Algorithm 1 · abbreviated from the paper</div>
 <ol class="algorithm-steps">
 <li>Initialize the score network, its EMA copy, and the field-variance estimate.</li>
@@ -31,9 +34,6 @@
 <li>Compute the clipped CVSI target; take a weighted score-regression gradient step and update the EMA.</li>
 <li>Repeat the inner updates and outer rounds; return the EMA sampler.</li>
 </ol>
-</div>
-<div class="gif-placeholder" id="comparison-gif"><div class="placeholder-pair"><div><span class="field-icon">φ</span><h3>HMC reference</h3></div><div><span class="field-icon">φ̂</span><h3>CVSI (ours)</h3></div></div><p>Loading the saved-sample comparison…</p></div>
-<p class="caption">Saved configurations 300–600 at 10 frames per second, comparing the archived HMC reference and saved CVSI configurations at κ = 0.2705 and λ = 0.022. The sampler uses the paper-selected L16 critical-phase checkpoint (round 2000).</p>
 </section>
 <section class="section-block" id="results">
 <h2>Experimental Results</h2>
